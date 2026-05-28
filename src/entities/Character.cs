@@ -1,4 +1,4 @@
-class Character(string name, int healthPoints, int attackPower)
+abstract class Character(string name, int healthPoints, int attackPower)
 {
     public string Name { get; } = name;
     public int HealthPoints { get; set; } = healthPoints;
@@ -20,7 +20,7 @@ class Character(string name, int healthPoints, int attackPower)
             HealthPoints = MinHealthPoints;
         }
 
-        Console.WriteLine($"{Name} takes {damage} damage from {attacker.Name} and has {HealthPoints} HP left.");
+        Console.WriteLine($"{Name} subit {damage} dégâts de {attacker.Name} et a {HealthPoints} PV restants.");
     }
 
     public void Heal(int healAmount)
@@ -32,6 +32,6 @@ class Character(string name, int healthPoints, int attackPower)
             HealthPoints = MaxHealthPoints;
         }
 
-        Console.WriteLine($"{Name} heals for {healAmount} and has {HealthPoints} HP now.");
+        Console.WriteLine($"{Name} se soigne de {healAmount} et a {HealthPoints} PV maintenant.");
     }
 }
