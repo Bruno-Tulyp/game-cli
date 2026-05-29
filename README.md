@@ -29,37 +29,36 @@ Le projet vise un jeu de combat tour par tour.
 1. Le joueur saisit son nom.
 2. Le joueur choisit une classe de héros.
 3. Le combat démarre contre un ennemi.
-4. Les affrontements se déroulent round par round jusqu’à la victoire ou la défaite.
+4. Les affrontements se déroulent round par round jusqu'à la victoire ou la défaite.
 5. Les compétences spéciales et les cooldowns donnent une identité forte à chaque classe.
 
 ## Ce qui est déjà implémenté
 
-Aujourd’hui, le programme console fait encore une version très réduite de ce flux.
+Aujourd'hui, le programme console fait encore une version très réduite de ce flux.
 
-1. L’application affiche la liste des classes de héros disponibles.
-2. L’utilisateur choisit un héros par numéro.
+1. L'application affiche la liste des classes de héros disponibles.
+2. L'utilisateur choisit un nom et son héros par numéro.
 3. Un héros est instancié via [HeroFactory](src/factories/HeroFactory.cs).
 4. Un ennemi Goblin est instancié via [EnemyFactory](src/factories/EnemyFactory.cs).
-5. La compétence spéciale du héros est utilisée une seule fois sur l’ennemi.
+5. L'utilisateur choisit parmi une action disponible et l'exécute
 
 Ce qui manque encore pour correspondre à la vision cible :
 
-- la saisie du nom du joueur
 - une vraie boucle de combat round par round
-- l’alternance des actions entre héros et ennemi
+- l'alternance des actions entre héros et ennemi
 - la gestion complète de la victoire et de la défaite
-- le choix de l’ennemi au lieu d’un Goblin imposé
+- le choix de l'ennemi au lieu d'un Goblin imposé
 
 ## Patterns de conception utilisés
 
 ### Factory
 
-Le projet utilise le pattern Factory pour centraliser la création des objets de jeu. Au lieu d’instancier les classes directement dans le flux principal, la logique de création est regroupée dans des factories dédiées.
+Le projet utilise le pattern Factory pour centraliser la création des objets de jeu. Au lieu d'instancier les classes directement dans le flux principal, la logique de création est regroupée dans des factories dédiées.
 
 Ce que cela apporte :
 
-- évite de disperser les `new` dans le code d’exécution
-- simplifie l’ajout de nouveaux héros ou ennemis
+- évite de disperser les `new` dans le code d'exécution
+- simplifie l'ajout de nouveaux héros ou ennemis
 - isole la logique de création du reste du jeu
 
 Classes concernées :
@@ -77,13 +76,13 @@ Classes concernées :
 
 ### Template Method
 
-Le pattern Template Method est présent dans la gestion des compétences spéciales. La classe abstraite définit l’algorithme commun de l’utilisation d’une compétence, puis délègue l’effet concret à une méthode abstraite implémentée par chaque compétence.
+Le pattern Template Method est présent dans la gestion des compétences spéciales. La classe abstraite définit l'algorithme commun de l'utilisation d'une compétence, puis délègue l'effet concret à une méthode abstraite implémentée par chaque compétence.
 
 Ce que cela apporte :
 
 - garantit un comportement commun pour toutes les compétences
 - évite de dupliquer la logique de cooldown et de validation
-- permet de spécialiser uniquement la partie variable de l’attaque
+- permet de spécialiser uniquement la partie variable de l'attaque
 
 Classes concernées :
 
@@ -95,14 +94,14 @@ Classes concernées :
 
 ## Structure du projet
 
-- [src/cli/Program.cs](src/cli/Program.cs) : point d’entrée de l’application
+- [src/cli/Program.cs](src/cli/Program.cs) : point d'entrée de l'application
 - [src/entities](src/entities) : hiérarchie des entités du jeu
 - [src/heroes](src/heroes) : classes concrètes de héros
-- [src/enemies](src/enemies) : classes concrètes d’ennemis
+- [src/enemies](src/enemies) : classes concrètes d'ennemis
 - [src/factories](src/factories) : usines de création des objets de jeu
 - [src/abilities](src/abilities) : compétences spéciales des héros
 - [src/enums](src/enums) : types disponibles pour le menu et les factories
 
 ## Remarque
 
-Le projet utilise aussi l’héritage et le polymorphisme de façon importante, mais les deux patterns les plus clairement matérialisés par l’architecture actuelle sont la Factory et le Template Method.
+Le projet utilise aussi l'héritage et le polymorphisme de façon importante, mais les deux patterns les plus clairement matérialisés par l'architecture actuelle sont la Factory et le Template Method.

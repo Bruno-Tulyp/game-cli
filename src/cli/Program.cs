@@ -1,37 +1,28 @@
 ﻿using game_cli.src.enums;
 
-Console.WriteLine("Jeu CLI - Sélection du héros\n");
+ConsoleGameHelper.DisplayGameInfo();
 
-foreach (var heroType in Enum.GetValues<HeroType>())
+string heroName = ConsoleGameHelper.ReadHeroName();
+HeroType selectedHeroType = ConsoleGameHelper.ReadHeroType();
+
+Hero player = HeroFactory.CreateHero(selectedHeroType, heroName);
+Enemy enemy = EnemyFactory.CreateEnemy(EnemyType.Goblin);
+
+ConsoleGameHelper.DisplayGameSummary(player, enemy);
+
+BattleAction selectedAction = ConsoleGameHelper.ReadBattleAction();
+
+Dictionary<BattleAction, Action> actions = new()
 {
-    Console.WriteLine($"{(int)heroType}. {heroType}");
-}
+    [BattleAction.Attack] = () =>
+        enemy.TakeDamage(player.AttackPower, player),
+    [BattleAction.UseSpecialAbility] = () =>
+        player.SpecialAbility.Use(player, enemy),
+    [BattleAction.Quit] = () =>
+        Console.WriteLine("Vous avez quitté la partie.")
+};
 
-bool validInput = false;
-
-Hero player;
-
-while (!validInput)
+if (actions.TryGetValue(selectedAction, out var action))
 {
-    Console.Write("\nEntrez le numéro correspondant au type de héros: ");
-
-    string? input = Console.ReadLine();
-
-    if (int.TryParse(input, out int heroTypeNumber) && Enum.IsDefined(typeof(HeroType), heroTypeNumber))
-    {
-        HeroType selectedHeroType = (HeroType)heroTypeNumber;
-
-        Console.WriteLine($"Vous avez sélectionné: {selectedHeroType}\n");
-
-        player = HeroFactory.CreateHero(selectedHeroType, "Player");        
-        Enemy enemy = EnemyFactory.CreateEnemy(EnemyType.Goblin);
-
-        player.SpecialAbility.Use(player, enemy);
-
-        validInput = true;
-    }
-    else
-    {
-        Console.WriteLine("Entrée non valide. Veuillez entrer un numéro valide correspondant à un type de héros.");
-    }
+    action();
 }
