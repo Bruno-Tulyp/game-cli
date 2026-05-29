@@ -92,6 +92,25 @@ Classes concernées :
 - [WarriorAbility](src/abilities/WarriorAbility.cs)
 - [ThiefAbility](src/abilities/ThiefAbility.cs)
 
+### Strategy
+
+Les compétences spéciales sont également exposées comme des objets `ISpecialAbility` attachés aux héros. Chaque héros possède une instance concrète d'`ISpecialAbility` (par ex. `WarriorAbility`, `MagicianAbility`, `ThiefAbility`) ; l'utilisation d'une interface distincte permet d'échanger ou de tester des comportements sans modifier la hiérarchie des héros — c'est l'esprit du pattern Strategy.
+
+Ce que cela apporte :
+
+- sépare l'algorithme de la compétence de la classe `Hero`
+- facilite les tests unitaires et le remplacement des compétences à l'exécution
+- rend le comportement spécial interchangeable sans toucher à la hiérarchie de classes
+
+Classes concernées :
+
+- [ISpecialAbility](src/abilities/ISpecialAbility.cs)
+- [SpecialAbilityBase](src/abilities/SpecialAbilityBase.cs)
+- [MagicianAbility](src/abilities/MagicianAbility.cs)
+- [WarriorAbility](src/abilities/WarriorAbility.cs)
+- [ThiefAbility](src/abilities/ThiefAbility.cs)
+- [Hero](src/entities/Hero.cs)
+
 ## Structure du projet
 
 - [src/cli/Program.cs](src/cli/Program.cs) : point d'entrée de l'application
